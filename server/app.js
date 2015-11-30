@@ -35,6 +35,12 @@ secureServer.listen('8000', config.ip, function () {
   console.log('Secure Express server listening on %d, in %s mode', '8000', app.get('env'));
 });
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 
 // Expose app
 exports = module.exports = app;
