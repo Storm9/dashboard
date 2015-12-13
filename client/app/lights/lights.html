@@ -1,34 +1,46 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
 <div class="container">
   <div class="panel panel-default">
-    <div class="panel-header">
-      <h2>{{vm.title}}</h2>
+    <div class="panel-heading">
+      <span style="font-size: large; margin-right: 7px">Outside Temp:</span>
+      <span style="color:royalblue; font-size: large"><b>{{vm.weather.currently.temperature}}°F</b></span>
     </div>
     <div class="panel-body">
       <div class="row">
-        <button type="button" ng-click="vm.turnOnAllLights()" class="btn btn-success btn-lg col-sm-2 col-sm-offset-1">
-          All lights on
-        </button>
-        <button type="button" ng-click="vm.turnOffLights()" class="btn btn-danger btn-lg col-sm-2 col-sm-offset-3">
-          All lights off
-        </button>
-      </div>
-      <div class="row"><h3>Select a scene</h3></div>
-      <div class="row">
-        <button type="button" ng-click="vm.setDefaultScene()" class="btn btn-primary btn-lg">Default</button>
-        <button type="button" ng-click="vm.setTVColorLoop()" class="btn btn-primary btn-lg">Color Loop</button>
-        <button type="button" ng-click="vm.setKitchenDowns()" class="btn btn-primary btn-lg">Kitchen Downs</button>
-        <button type="button" ng-click="vm.setAllKitchenLights()" class="btn btn-primary btn-lg">All Kitchen Lights
-        </button>
+        <div class="col-sm-12">
+          <div ng-repeat="busArrivalInfo in vm.busPrediction.prd">
+            <span style="font-size: large"><b>{{busArrivalInfo.des[0]}} - {{busArrivalInfo.prdtm[0]}}</b></span>
+          </div>
+        </div>
       </div>
       <br>
-
       <div class="row">
-        <button type="button" ng-click="vm.setMovieMode()" class="btn btn-primary btn-lg">Movie Mode</button>
-        <button type="button" ng-click="vm.setVirginAtlanticPurple()" class="btn btn-primary btn-lg">Purple</button>
-        <button type="button" ng-click="vm.setHalloween()" class="btn btn-primary btn-lg">Halloween</button>
-        <button type="button" ng-click="vm.setDeepBlue()" class="btn btn-primary btn-lg">Deep Blue</button>
+        <div class="col-sm-12">
+          <button type="button" ng-click="vm.turnOnAllLights()" class="btn btn-success btn-lg col-sm-6">
+            All lights on
+          </button>
+          <button type="button" ng-click="vm.turnOffLights()" class="btn btn-danger btn-lg col-sm-6">
+            All lights off
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="button" ng-click="vm.setDefaultScene()" class="btn btn-primary btn-lg">Default</button>
+          <button type="button" ng-click="vm.setTVColorLoop()" class="btn btn-primary btn-lg">Color Loop</button>
+          <button type="button" ng-click="vm.setKitchenDowns()" class="btn btn-primary btn-lg">Kitchen Downs</button>
+          <button type="button" ng-click="vm.setAllKitchenLights()" class="btn btn-primary btn-lg">All Kitchen Lights
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="button" ng-click="vm.setMovieMode()" class="btn btn-primary btn-lg">Movie Mode</button>
+          <button type="button" ng-click="vm.setVirginAtlanticPurple()" class="btn btn-primary btn-lg">Purple</button>
+          <button type="button" ng-click="vm.setHalloween()" class="btn btn-primary btn-lg">Halloween</button>
+          <button type="button" ng-click="vm.setDeepBlue()" class="btn btn-primary btn-lg">Deep Blue</button>
+        </div>
       </div>
     </div>
   </div>

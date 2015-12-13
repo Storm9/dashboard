@@ -3,10 +3,10 @@
 angular.module('dashboardApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('lights', {
-        url: '/lights',
-        templateUrl: 'app/lights/lights.html',
-        controller: 'LightsCtrl',
+      .state('cta', {
+        url: '/cta',
+        templateUrl: 'app/cta/cta.html',
+        controller: 'CtaCtrl',
         controllerAs: 'vm'
       });
   });

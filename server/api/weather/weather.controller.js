@@ -11,7 +11,6 @@
 
 var _ = require('lodash');
 var https = require('https');
-var util = require('util');
 var request = require('request');
 
 // Get list of weather

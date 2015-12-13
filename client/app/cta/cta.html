@@ -1,0 +1,9 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="col-md-12">
+
+  <div ng-repeat="busArrivalInfo in vm.busPrediction.prd">
+    {{busArrivalInfo.des[0]}} - {{ busArrivalInfo.prdtm[0] | date:"MM/dd/yyyy 'at' h:mma"}}
+  </div>
+
+</div>

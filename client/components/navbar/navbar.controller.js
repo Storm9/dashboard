@@ -14,6 +14,10 @@ angular.module('dashboardApp')
       {
         'title': 'Weather',
         'link': '/weather'
+      },
+      {
+        'title': 'CTA',
+        'link': '/cta'
       }
     ];
 

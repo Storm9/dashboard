@@ -1,27 +1,41 @@
 'use strict';
 
 angular.module('dashboardApp')
-  .controller('LightsCtrl', function (hue) {
+  .controller('LightsCtrl', function ($resource, $timeout, hue) {
     var vm = this;
-
-    vm.title = 'Hue Light Controls';
-
-    // Get all lights
     var myHue = hue;
-    myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
+    var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
+    var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
+
+    vm.turnOnAllLights = turnOnAllLights;
+    vm.turnOffLights = turnOffLights;
+    vm.setDefaultScene = setDefaultScene;
+    vm.setMovieMode = setMovieMode;
+    vm.setVirginAtlanticPurple = setVirginAtlanticPurple;
+    vm.setHalloween = setHalloween;
+    vm.setDeepBlue = setDeepBlue;
+    vm.setTVColorLoop = setTVColorLoop;
+    vm.setKitchenDowns = setKitchenDowns;
+    vm.setAllKitchenLights = setAllKitchenLights;
 
     function init() {
-      vm.turnOnAllLights = turnOnAllLights;
-      vm.turnOffLights = turnOffLights;
-      vm.setDefaultScene = setDefaultScene;
-      vm.setMovieMode = setMovieMode;
-      vm.setVirginAtlanticPurple = setVirginAtlanticPurple;
-      vm.setHalloween = setHalloween;
-      vm.setDeepBlue = setDeepBlue;
-      vm.setTVColorLoop = setTVColorLoop;
-      vm.setKitchenDowns = setKitchenDowns;
-      vm.setAllKitchenLights = setAllKitchenLights;
+      // Get all lights
+      myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
+      fireDigestEveryCoupleSeconds();
     }
+
+    function fireDigestEveryCoupleSeconds() {
+      WeatherReport.get(function (weather) {
+        vm.weather = weather;
+      });
+
+      CTAInfo.get(function (predictions) {
+        vm.busPrediction = predictions['bustime-response'];
+      });
+
+      $timeout(fireDigestEveryCoupleSeconds , 600000);
+    }
+
 
     function turnOnAllLights() {
       myHue.setGroupState(1, {on: true, scene: "e02612416-on-0"}); //TV Lights
