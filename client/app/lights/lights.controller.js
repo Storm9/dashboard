@@ -4,8 +4,10 @@ angular.module('dashboardApp')
   .controller('LightsCtrl', function ($resource, $timeout, hue) {
     var vm = this;
     var myHue = hue;
-    var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
-    var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
+    var TenMinsInMilliSecs = 600000;
+    var OneMinInMilliSecs = 60000;
+    var WeatherReport = $resource('http://localhost:9000/api/weather');
+    var CTAInfo = $resource('http://localhost:9000/api/cta');
 
     vm.turnOnAllLights = turnOnAllLights;
     vm.turnOffLights = turnOffLights;
@@ -21,21 +23,34 @@ angular.module('dashboardApp')
     function init() {
       // Get all lights
       myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
-      fireDigestEveryCoupleSeconds();
+      loadWeatherData();
+      loadCTAData();
     }
 
-    function fireDigestEveryCoupleSeconds() {
+    function loadWeatherData() {
       WeatherReport.get(function (weather) {
         vm.weather = weather;
       });
 
-      CTAInfo.get(function (predictions) {
-        vm.busPrediction = predictions['bustime-response'];
-      });
-
-      $timeout(fireDigestEveryCoupleSeconds , 600000);
+      $timeout(loadWeatherData, TenMinsInMilliSecs);
     }
 
+    function loadCTAData() {
+      CTAInfo.get(function (predictions) {
+        vm.busPrediction = predictions['bustime-response'];
+
+      //  var busInfo = {};
+      //  var busList = [];
+      //  _.forEach(predictions['bustime-response'].prd, function(prediction){
+      //    var time = prediction.prdtm[0].split(' ');
+      //    busInfo[prediction.des[0]] = time[1];
+      //    busList.push(busInfo);
+      //  });
+      //  vm.busPrediction = busList;
+      });
+
+      $timeout(loadCTAData, OneMinInMilliSecs);
+    }
 
     function turnOnAllLights() {
       myHue.setGroupState(1, {on: true, scene: "e02612416-on-0"}); //TV Lights
@@ -102,7 +117,7 @@ angular.module('dashboardApp')
       myHue.setGroupState(4, {on: false});
     }
 
-    function setAllKitchenLights(){
+    function setAllKitchenLights() {
       myHue.setGroupState(1, {on: false});
       myHue.setGroupState(2, {on: true, scene: "e02612416-on-0"});
       myHue.setGroupState(3, {on: false});
