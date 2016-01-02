@@ -6,26 +6,38 @@ angular.module('dashboardApp')
     var myHue = hue;
     var TenMinsInMilliSecs = 600000;
     var OneMinInMilliSecs = 60000;
+    //var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
+    //var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
     var WeatherReport = $resource('http://localhost:9000/api/weather');
     var CTAInfo = $resource('http://localhost:9000/api/cta');
 
-    vm.turnOnAllLights = turnOnAllLights;
-    vm.turnOffLights = turnOffLights;
-    vm.setDefaultScene = setDefaultScene;
-    vm.setMovieMode = setMovieMode;
-    vm.setVirginAtlanticPurple = setVirginAtlanticPurple;
-    vm.setHalloween = setHalloween;
-    vm.setDeepBlue = setDeepBlue;
-    vm.setTVColorLoop = setTVColorLoop;
-    vm.setKitchenDowns = setKitchenDowns;
-    vm.setAllKitchenLights = setAllKitchenLights;
+    var scenes = {
+      defaultYellow: 'a02922612-on-0',
+      cockpitRed: 'ce164c0dc-on-0',
+      deadMouse: 'b23171179-on-0',
+      sofaBoard: 'e03bb7fed-on-0',
+      movie: '1bc118f19-on-0'
+    };
 
     function init() {
       // Get all lights
       myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
       loadWeatherData();
       loadCTAData();
+
+      vm.turnOnAllLights = turnOnAllLights;
+      vm.turnOffLights = turnOffLights;
+      vm.setDefaultScene = setDefaultScene;
+      vm.setMovieMode = setMovieMode;
+      vm.setDeadMouse = setDeadMouse;
+      vm.setSofaBoard = setSofaBoard;
+      vm.setCockpitRed = setCockpitRed;
+      vm.setColorLoop = setColorLoop;
+      vm.setKitchenDowns = setKitchenDowns;
+      vm.setAllKitchenLights = setAllKitchenLights;
     }
+
+    init();
 
     function loadWeatherData() {
       WeatherReport.get(function (weather) {
@@ -38,25 +50,16 @@ angular.module('dashboardApp')
     function loadCTAData() {
       CTAInfo.get(function (predictions) {
         vm.busPrediction = predictions['bustime-response'];
-
-      //  var busInfo = {};
-      //  var busList = [];
-      //  _.forEach(predictions['bustime-response'].prd, function(prediction){
-      //    var time = prediction.prdtm[0].split(' ');
-      //    busInfo[prediction.des[0]] = time[1];
-      //    busList.push(busInfo);
-      //  });
-      //  vm.busPrediction = busList;
       });
 
       $timeout(loadCTAData, OneMinInMilliSecs);
     }
 
     function turnOnAllLights() {
-      myHue.setGroupState(1, {on: true, scene: "e02612416-on-0"}); //TV Lights
-      myHue.setGroupState(2, {on: true, scene: "e02612416-on-0"}); //Kitchen Downs
-      myHue.setGroupState(3, {on: true, scene: "e02612416-on-0"}); //Living room downs
-      myHue.setGroupState(4, {on: true, scene: "e02612416-on-0"}); //Dining room light
+      myHue.setGroupState(1, {on: true, scene: scenes.defaultYellow}); //TV Lights
+      myHue.setGroupState(2, {on: true, scene: scenes.defaultYellow}); //Kitchen Downs
+      myHue.setGroupState(3, {on: true, scene: scenes.defaultYellow}); //Living room downs
+      myHue.setGroupState(4, {on: true, scene: scenes.defaultYellow}); //Dining room light
     }
 
     function turnOffLights() {
@@ -67,62 +70,58 @@ angular.module('dashboardApp')
     }
 
     function setDefaultScene() {
-      myHue.setGroupState(1, {on: true, scene: "e02612416-on-0"});
-      myHue.setGroupState(2, {on: true, scene: "e02612416-on-0"});
+      myHue.setGroupState(1, {on: true, scene: scenes.defaultYellow});
+      myHue.setGroupState(2, {on: true, scene: scenes.defaultYellow});
       myHue.setGroupState(3, {on: false});
-      myHue.setGroupState(4, {on: true, scene: "e02612416-on-0"});
+      myHue.setGroupState(4, {on: true, scene: scenes.defaultYellow});
     }
 
     function setMovieMode() {
-      var transitionTime = 6;
-      var brightness = 10;
-      myHue.setGroupState(1, {on: true, scene: "3b727eaba-on-0", bri: brightness, transitiontime: transitionTime});
-      myHue.setGroupState(2, {on: false, transitiontime: transitionTime});
-      myHue.setGroupState(3, {on: false, transitiontime: transitionTime});
-      myHue.setGroupState(4, {on: false});
+      myHue.setGroupState(1, {on: true, scene: scenes.movie});
+      myHue.setGroupState(2, {on: true, scene: scenes.movie});
+      myHue.setGroupState(3, {on: false});
+      myHue.setGroupState(4, {on: false, scene: scenes.movie});
     }
 
-    function setVirginAtlanticPurple() {
-      myHue.setGroupState(1, {on: true, scene: "e210eae61-on-0"});
-      myHue.setGroupState(2, {on: true, scene: "e210eae61-on-0"});
-      myHue.setGroupState(3, {on: true, scene: "e210eae61-on-0"});
-      myHue.setGroupState(4, {on: true, scene: "e210eae61-on-0"});
+    function setDeadMouse() {
+      myHue.setGroupState(1, {on: true, scene: scenes.deadMouse});
+      myHue.setGroupState(2, {on: true, scene: scenes.deadMouse});
+      myHue.setGroupState(3, {on: true, scene: scenes.deadMouse});
+      myHue.setGroupState(4, {on: true, scene: scenes.deadMouse});
     }
 
-    function setHalloween() {
-      myHue.setGroupState(1, {on: true, scene: "496099b7c-on-0"});
-      myHue.setGroupState(2, {on: true, scene: "496099b7c-on-0"});
-      myHue.setGroupState(3, {on: true, scene: "496099b7c-on-0"});
-      myHue.setGroupState(4, {on: true, scene: "496099b7c-on-0"});
+    function setSofaBoard() {
+      myHue.setGroupState(1, {on: true, scene: scenes.sofaBoard});
+      myHue.setGroupState(2, {on: true, scene: scenes.sofaBoard});
+      myHue.setGroupState(3, {on: true, scene: scenes.sofaBoard});
+      myHue.setGroupState(4, {on: true, scene: scenes.sofaBoard});
     }
 
-    function setDeepBlue() {
-      myHue.setGroupState(1, {on: true, scene: "121fa9f80-on-0"});
-      myHue.setGroupState(2, {on: true, scene: "121fa9f80-on-0"});
-      myHue.setGroupState(3, {on: true, scene: "121fa9f80-on-0"});
-      myHue.setGroupState(4, {on: true, scene: "121fa9f80-on-0"});
+    function setCockpitRed() {
+      myHue.setGroupState(1, {on: true, scene: scenes.cockpitRed});
+      myHue.setGroupState(2, {on: true, scene: scenes.cockpitRed});
+      myHue.setGroupState(3, {on: true, scene: scenes.cockpitRed});
+      myHue.setGroupState(4, {on: true, scene: scenes.cockpitRed});
     }
 
-    function setTVColorLoop() {
+    function setColorLoop() {
       myHue.setGroupState(1, {on: true, bri: 255, transitiontime: 10, effect: "colorloop"});
-      myHue.setGroupState(2, {on: true, bri: 255, scene: "496099b7c-on-0"});
-      myHue.setGroupState(3, {on: true, bri: 255, scene: "496099b7c-on-0"});
+      myHue.setGroupState(2, {on: true, bri: 255, scene: scenes.defaultYellow});
+      myHue.setGroupState(3, {on: true, bri: 255, scene: scenes.defaultYellow});
       myHue.setGroupState(4, {on: true, bri: 255, transitiontime: 10, effect: "colorloop"});
     }
 
     function setKitchenDowns() {
       myHue.setGroupState(1, {on: false});
-      myHue.setGroupState(2, {on: true, scene: "e02612416-on-0"});
+      myHue.setGroupState(2, {on: true, scene: scenes.defaultYellow});
       myHue.setGroupState(3, {on: false});
       myHue.setGroupState(4, {on: false});
     }
 
     function setAllKitchenLights() {
       myHue.setGroupState(1, {on: false});
-      myHue.setGroupState(2, {on: true, scene: "e02612416-on-0"});
+      myHue.setGroupState(2, {on: true, scene: scenes.defaultYellow});
       myHue.setGroupState(3, {on: false});
-      myHue.setGroupState(4, {on: true, scene: "e02612416-on-0"});
+      myHue.setGroupState(4, {on: true, scene: scenes.defaultYellow});
     }
-
-    init();
   });

@@ -13,7 +13,6 @@ exports.index = function (req, res) {
   var callback = function(data) {
     var predictions = "" + data;
     parseString(predictions, function (err, result) {
-      //console.dir(result);
       res.json(result);
     });
   };
