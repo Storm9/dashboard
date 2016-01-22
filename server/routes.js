@@ -10,6 +10,7 @@ var path = require('path');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/beacon', require('./api/beacon'));
   app.use('/api/cta', require('./api/cta'));
   app.use('/api/weather', require('./api/weather'));
   app.use('/api/things', require('./api/thing'));

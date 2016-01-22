@@ -6,10 +6,10 @@ angular.module('dashboardApp')
     var myHue = hue;
     var TenMinsInMilliSecs = 600000;
     var OneMinInMilliSecs = 60000;
-    //var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
-    //var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
-    var WeatherReport = $resource('http://localhost:9000/api/weather');
-    var CTAInfo = $resource('http://localhost:9000/api/cta');
+    var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
+    var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
+    //var WeatherReport = $resource('http://localhost:9000/api/weather');
+    //var CTAInfo = $resource('http://localhost:9000/api/cta');
 
     var scenes = {
       defaultYellow: 'a02922612-on-0',
@@ -105,10 +105,10 @@ angular.module('dashboardApp')
     }
 
     function setColorLoop() {
-      myHue.setGroupState(1, {on: true, bri: 255, transitiontime: 10, effect: "colorloop"});
+      myHue.setGroupState(1, {on: true, bri: 255, transitiontime: 10, effect: 'colorloop'});
       myHue.setGroupState(2, {on: true, bri: 255, scene: scenes.defaultYellow});
       myHue.setGroupState(3, {on: true, bri: 255, scene: scenes.defaultYellow});
-      myHue.setGroupState(4, {on: true, bri: 255, transitiontime: 10, effect: "colorloop"});
+      myHue.setGroupState(4, {on: true, bri: 255, transitiontime: 10, effect: 'colorloop'});
     }
 
     function setKitchenDowns() {
