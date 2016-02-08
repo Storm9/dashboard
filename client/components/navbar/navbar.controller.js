@@ -8,10 +8,6 @@ angular.module('dashboardApp')
         'link': '/'
       },
       {
-        'title': 'Lights',
-        'link': '/lights'
-      },
-      {
         'title': 'Weather',
         'link': '/weather'
       },
