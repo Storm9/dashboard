@@ -3,14 +3,26 @@
 <div class="container" style="margin-top: 15px;">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <span style="font-size: large; margin-right: 7px">Outside Temp:</span>
-      <span style="color:royalblue; font-size: large"><b>{{vm.weather.currently.temperature}}°F</b></span>
+      <div class="row">
+        <div class="col-sm-6">
+          <span style="font-size: large; margin-right: 7px">Current Time: </span>
+          <span style="color:royalblue; font-size: large"><b>{{vm.date | date:'medium'}} </b></span>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1">
+          <span style="font-size: large;">  Outside Temp:</span>
+          <span style="color:royalblue; font-size: large"><b>{{vm.weather.currently.temperature}}°F</b></span>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-12">
-          <div ng-repeat="busArrivalInfo in vm.busPrediction.prd">
-            <i class="fa fa-bus fa-2x">-</i><span style="font-size: large"><b>{{busArrivalInfo.des[0]}} - {{busArrivalInfo.prdtm[0]}}</b></span>
+          <h5>Halsted & Jackson - Northbound</h5>
+          <div ng-repeat="busArrivalInfo in vm.busPredictions.prd">
+            <i class="fa fa-bus fa-2x">-</i>
+            <span style="font-size: large">
+              <b>{{busArrivalInfo.des[0]}} - {{busArrivalInfo.arrivalTime}}</b>
+            </span>
           </div>
         </div>
       </div>
@@ -31,7 +43,8 @@
           <button type="button" style="width: 75px; height: 75px; margin-left: 10px;" ng-click="vm.setKitchenDowns()"
                   class="btn btn-primary btn-lg"><i class="fa fa-cutlery fa-3x"></i>
           </button>
-          <button type="button" style="width: 120px; height: 75px; margin-left: 10px;" ng-click="vm.setAllKitchenLights()"
+          <button type="button" style="width: 120px; height: 75px; margin-left: 10px;"
+                  ng-click="vm.setAllKitchenLights()"
                   class="btn btn-primary btn-lg"><i class="fa fa-cutlery fa-2x">+</i><i class="fa fa-laptop fa-2x"></i>
           </button>
           <button type="button" style="width: 87px; height: 75px; margin-left: 10px;" ng-click="vm.setMovieMode()"
@@ -48,7 +61,7 @@
                   ng-click="vm.setDeadMouse()" class="btn btn-lg">
           </button>
           <button type="button" style="width: 82px; height: 75px; margin-left: 10px;"
-                  ng-click="vm.setColorLoop()" class="btn btn-primary btn-lg">  <i class="fa fa-circle-o-notch fa-3x"></i>
+                  ng-click="vm.setColorLoop()" class="btn btn-primary btn-lg"><i class="fa fa-circle-o-notch fa-3x"></i>
           </button>
           <button type="button" style="width: 75px; height: 75px; margin-left: 10px; background-color: coral"
                   ng-click="vm.setSofaBoard()" class="btn btn-primary btn-lg">

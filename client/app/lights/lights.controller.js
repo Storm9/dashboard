@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('dashboardApp')
-  .controller('LightsCtrl', function ($resource, $timeout, hue) {
+  .controller('LightsCtrl', function ($resource, $interval, $scope, hue) {
     var vm = this;
     var myHue = hue;
     var TenMinsInMilliSecs = 600000;
-    var OneMinInMilliSecs = 60000;
-    var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
-    var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
-    //var WeatherReport = $resource('http://localhost:9000/api/weather');
-    //var CTAInfo = $resource('http://localhost:9000/api/cta');
+    var OneMinInMilliSecs = 180000;
+    //var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
+    //var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
+    var WeatherReport = $resource('http://localhost:9000/api/weather');
+    var CTAInfo = $resource('http://localhost:9000/api/cta');
+    var ctaData;
+    var weatherData;
 
     var scenes = {
       defaultYellow: 'a02922612-on-0',
@@ -20,8 +22,8 @@ angular.module('dashboardApp')
     };
 
     function init() {
-      // Get all lights
       myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
+      vm.date = new Date();
       loadWeatherData();
       loadCTAData();
 
@@ -43,17 +45,31 @@ angular.module('dashboardApp')
       WeatherReport.get(function (weather) {
         vm.weather = weather;
       });
-
-      $timeout(loadWeatherData, TenMinsInMilliSecs);
     }
 
     function loadCTAData() {
       CTAInfo.get(function (predictions) {
-        vm.busPrediction = predictions['bustime-response'];
+        vm.busPredictions = predictions['bustime-response'];
+        _(vm.busPredictions.prd).forEach(function (prediction) {
+          var arrivalTime = {arrivalTime: prediction.prdtm[0].split(' ')[1]};
+          _.merge(prediction, arrivalTime);
+        });
       });
-
-      $timeout(loadCTAData, OneMinInMilliSecs);
     }
+
+    ctaData = $interval(loadCTAData, OneMinInMilliSecs);
+    weatherData = $interval(loadWeatherData, TenMinsInMilliSecs);
+
+    $scope.$on('$destroy', function () {
+      if (angular.isDefined(ctaData)) {
+        $interval.cancel(ctaData);
+        ctaData = undefined;
+      }
+      if (angular.isDefined(weatherData)) {
+        $interval.cancel(weatherData);
+        weatherData = undefined;
+      }
+    });
 
     function turnOnAllLights() {
       myHue.setGroupState(1, {on: true, scene: scenes.defaultYellow}); //TV Lights
