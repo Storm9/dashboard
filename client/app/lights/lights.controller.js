@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('dashboardApp')
-  .controller('LightsCtrl', function ($resource, $interval, $scope, hue) {
+  .controller('LightsCtrl', function ($resource, $interval, $timeout, $scope, hue) {
     var vm = this;
     var myHue = hue;
     var TenMinsInMilliSecs = 600000;
     var OneMinInMilliSecs = 180000;
-    //var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
-    //var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
-    var WeatherReport = $resource('http://localhost:9000/api/weather');
-    var CTAInfo = $resource('http://localhost:9000/api/cta');
+    var WeatherReport = $resource('https://polar-savannah-5946.herokuapp.com/api/weather');
+    var CTAInfo = $resource('https://polar-savannah-5946.herokuapp.com/api/cta');
+    //var WeatherReport = $resource('http://localhost:9000/api/weather');
+    //var CTAInfo = $resource('http://localhost:9000/api/cta');
     var ctaData;
     var weatherData;
 
@@ -22,8 +22,9 @@ angular.module('dashboardApp')
     };
 
     function init() {
+      vm.clock = "loading clock...";
+      vm.tickInterval = 1000;
       myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
-      vm.date = new Date();
       loadWeatherData();
       loadCTAData();
 
@@ -37,6 +38,9 @@ angular.module('dashboardApp')
       vm.setColorLoop = setColorLoop;
       vm.setKitchenDowns = setKitchenDowns;
       vm.setAllKitchenLights = setAllKitchenLights;
+
+      // Start the timer
+      $timeout(tick, vm.tickInterval);
     }
 
     init();
@@ -139,5 +143,10 @@ angular.module('dashboardApp')
       myHue.setGroupState(2, {on: true, scene: scenes.defaultYellow});
       myHue.setGroupState(3, {on: false});
       myHue.setGroupState(4, {on: true, scene: scenes.defaultYellow});
+    }
+
+    function tick(){
+      vm.clock = Date.now();
+      $timeout(tick, vm.tickInterval); // reset the timer
     }
   });

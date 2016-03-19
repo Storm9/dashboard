@@ -13,7 +13,7 @@ exports.index = function (req, res) {
 
   request.get(url, function (error, response, data) {
     var predictions = "" + data;
-    if (!error && response.statusCode == 200) {
+    if (!error && response.statusCode === 200) {
       parseString(predictions, function (parseError, result) {
         res.json(result);
       });
