@@ -24,7 +24,7 @@ angular.module('dashboardApp')
     function init() {
       vm.clock = "loading clock...";
       vm.tickInterval = 1000;
-      myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.2', debug: true});
+      myHue.setup({username: 'newdeveloper', bridgeIP: '10.0.1.3', debug: true});
       loadWeatherData();
       loadCTAData();
 
